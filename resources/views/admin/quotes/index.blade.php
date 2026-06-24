@@ -1,0 +1,7 @@
+@extends('admin.layout')
+@section('title','Demandes de devis')
+@php($active='quotes')
+@section('content')
+<div class="admin-page-heading"><div><p class="eyebrow">Commercial</p><h1>Demandes de devis</h1><p>Suivez chaque prospect jusqu'a la confirmation.</p></div></div>
+<section class="admin-section"><div class="request-table-wrap"><table class="request-table"><thead><tr><th>Reference</th><th>Client</th><th>Trajet</th><th>Date</th><th>Passagers</th><th>Statut</th><th>Action</th></tr></thead><tbody>@forelse($requests as $request)<tr><td>{{ $request->reference }}</td><td>{{ $request->organization ?: $request->name }}<br><small>{{ $request->phone }}</small></td><td>{{ $request->origin }} - {{ $request->destination }}</td><td>{{ $request->departure_date->format('d/m/Y') }}</td><td>{{ $request->passengers }}</td><td><form method="post" action="{{ route('admin.quotes.status',$request) }}">@csrf @method('PATCH')<select name="status" class="status-select" onchange="this.form.submit()">@foreach(['Nouvelle demande','En cours','Devis envoye','Confirmee','Annulee'] as $status)<option @selected($request->status===$status)>{{ $status }}</option>@endforeach</select></form></td><td><a class="btn secondary table-action" href="{{ route('admin.quotes.show',$request) }}">Voir / Gerer</a></td></tr>@empty<tr><td colspan="7">Aucune demande de devis.</td></tr>@endforelse</tbody></table></div></section>
+@endsection

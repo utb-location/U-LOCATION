@@ -1,0 +1,8 @@
+@extends('admin.layout')
+@section('title','Messages pop-up')
+@php($active='announcements')
+@section('content')
+<div class="admin-page-heading"><div><p class="eyebrow">Communication client</p><h1>Messages pop-up</h1><p>Animez la bande defilante visible sous l'en-tete du site public.</p></div><div class="form-actions"><a class="btn secondary" href="{{ route('admin.settings.edit') }}">Contenus publics</a><a class="btn primary" href="{{ route('admin.announcements.create') }}">Creer un message</a></div></div>
+@if($errors->any())<div class="login-alert"><strong>Action impossible</strong><span>{{ $errors->first() }}</span></div>@endif
+<section class="admin-section"><div class="request-table-wrap"><table class="request-table"><thead><tr><th>Message</th><th>Style</th><th>Diffusion</th><th>Ordre</th><th>Statut</th><th>Action</th></tr></thead><tbody>@forelse($messages as $message)<tr><td><strong>{{ $message->title ?: 'Information UTB' }}</strong><br><small>{{ $message->message }}</small></td><td>{{ ucfirst($message->style) }}</td><td><small>Debut : {{ $message->starts_at?->format('d/m/Y H:i') ?? 'Immediat' }}<br>Fin : {{ $message->ends_at?->format('d/m/Y H:i') ?? 'Sans limite' }}</small></td><td>{{ $message->position }}</td><td><span class="account-status {{ $message->active?'is-active':'is-suspended' }}">{{ $message->active?'Actif':'Inactif' }}</span></td><td><a class="btn secondary table-action" href="{{ route('admin.announcements.edit',$message) }}">Modifier</a></td></tr>@empty<tr><td colspan="6">Aucun message cree pour le moment.</td></tr>@endforelse</tbody></table></div></section>
+@endsection
